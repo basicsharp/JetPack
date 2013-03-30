@@ -9,15 +9,15 @@ USER_PASSWORD=""
 USER_SSHKEY=""
 
 #SSH Port
-SSHD_PORT="22"
+#SSHD_PORT="22"
 #SSH Protocol
-SSHD_PROTOCOL="2"
-#SSH Permit Root Login
-SSHD_PERMITROOT="No"
-#SSH Password Authentication
-SSHD_PASSWORDAUTH="Yes"
+#SSHD_PROTOCOL="2"
 #SSH Allowed Groups
-SSHD_GROUPS="sshusers"
+#SSHD_GROUPS="sshusers"
+#SSH Permit Root Login
+#SSHD_PERMITROOT="No"
+#SSH Password Authentication
+#SSHD_PASSWORDAUTH="Yes"
 
 #Usergroup to use for Admin Accounts
 SUDO_USERGROUP="wheel"
@@ -70,9 +70,16 @@ mv /etc/sudoers.tmp /etc/sudoers
 #chmod 0600 /etc/ssh/sshd_config.tmp
 #mv /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config
 #touch /tmp/restart-ssh
-echo -e "\nPermitRootLogin `echo $SSHD_PERMITROOT | tr '[:upper:]' '[:lower:]'`" >> /etc/ssh/sshd_config.tmp
-echo "PasswordAuthentication `echo $SSHD_PASSWORDAUTH | tr '[:upper:]' '[:lower:]'`" >> /etc/ssh/sshd_config.tmp
+
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.tmp
+# echo -e "\nPermitRootLogin `echo $SSHD_PERMITROOT | tr '[:upper:]' '[:lower:]'`" >> /etc/ssh/sshd_config.tmp
+sudo sed -i 's/PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+# echo "PasswordAuthentication `echo $SSHD_PASSWORDAUTH | tr '[:upper:]' '[:lower:]'`" >> /etc/ssh/sshd_config.tmp
+sudo sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
 # echo "AllowGroups `echo $SSHD_GROUPS | tr '[:upper:]' '[:lower:]'`" >> /etc/ssh/sshd_config.tmp
+chmod 0600 /etc/ssh/sshd_config.tmp
+mv /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config
+touch /tmp/restart-ssh
 
 # Create Groups
 groupadd $SSHD_GROUPS
