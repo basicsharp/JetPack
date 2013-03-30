@@ -1,28 +1,28 @@
-export HOSTNAME=""
-export TIMEZONE="UTC"
+HOSTNAME=""
+TIMEZONE="UTC"
 
 #Unprivileged User Account
-export USER_NAME="admin";
+USER_NAME="admin";
 #Unprivileged User Password
-export USER_PASSWORD=""
+USER_PASSWORD=""
 #Public Key for User
-export USER_SSHKEY=""
+USER_SSHKEY=""
 
 #SSH Port
-export SSHD_PORT="22"
+SSHD_PORT="22"
 #SSH Protocol
-export SSHD_PROTOCOL="2"
+SSHD_PROTOCOL="2"
 #SSH Permit Root Login
-export SSHD_PERMIT_ROOT="No"
+SSHD_PERMIT_ROOT="No"
 #SSH Password Authentication
-export SSHD_PASSWORDAUTH="Yes"
+SSHD_PASSWORDAUTH="Yes"
 #SSH Allowed Groups
-export SSHD_GROUPS="sshusers"
+SSHD_GROUPS="sshusers"
 
 #Usergroup to use for Admin Accounts
-export SUDO_USERGROUP="wheel"
+SUDO_USERGROUP="wheel"
 #Passwordless Sudo
-export SUDO_PASSWORDLESS="Do Not Require Password" #Require Password, Do Not Require Password
+SUDO_PASSWORDLESS="Do Not Require Password" #Require Password, Do Not Require Password
 
 #http://www.linode.com/stackscripts/view/?StackScriptID=1
 source include/StackScriptBashLib.sh
