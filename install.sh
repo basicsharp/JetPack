@@ -106,7 +106,7 @@ ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 aptitude -y install git screen yum vsftpd
 
 # Install Server Shield
-cd ~
+cd /home/$USER_NAME
 git clone git://github.com/bluedragonz/server-shield.git
 cd server-shield
 sed -i.bak -e 's/yum --security/yum/g' sshield
@@ -115,11 +115,11 @@ cp sshield /etc/init.d/sshield
 #/etc/init.d/sshield start
 
 # Download VladGh.com-LEMP
-cd ~
+cd /home/$USER_NAME
 git clone git://github.com/vladgh/VladGh.com-LEMP.git
 cd VladGh.com-LEMP/init_files
 sed -i.bak -e 's/start-stop-daemon/\/sbin\/start-stop-daemon/g' nginx
-cd ~
+cd /home/$USER_NAME
 
 # Restart Services
 restartServices
