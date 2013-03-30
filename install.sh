@@ -10,8 +10,11 @@ USER_PASSWORD=""
 #Public Key for User
 USER_SSHKEY=""
 
+#FTP User Account
 FTP_USER_NAME="sites"
+#FTP User Password
 FTP_USER_PASSWORD=""
+#FTP User Group
 FTP_USERGROUP="sites"
 
 #SSH Port
@@ -124,27 +127,20 @@ echo "$FTP_USER_NAME_LOWER:$FTP_USER_PASSWORD" | chpasswd
 FTP_USER_HOME=`sed -n "s/$FTP_USER_NAME_LOWER:x:[0-9]*:[0-9]*:[^:]*:\(.*\):.*/\1/p" < /etc/passwd`
 
 # Install Server Shield
-cd /home/$USER_NAME
-git clone git://github.com/bluedragonz/server-shield.git
-cd server-shield
-sed -i.bak -e 's/yum --security/yum/g' sshield
-chmod +x sshield
-cp sshield /etc/init.d/sshield
-cd /home/$USER_NAME
-chown -hR $USER_NAME server-shield
-
+git clone git://github.com/bluedragonz/server-shield.git /home/$USER_NAME/server-shield
+sed -i.bak -e 's/yum --security/yum/g' /home/$USER_NAME/server-shield/sshield
+chmod +x /home/$USER_NAME/server-shield/sshield
+cp /home/$USER_NAME/server-shield/sshield /etc/init.d/sshield
+chown -hR $USER_NAME /home/$USER_NAME/server-shield
 #/etc/init.d/sshield start
 
 # Download VladGh.com-LEMP
-cd /home/$USER_NAME
-git clone git://github.com/vladgh/VladGh.com-LEMP.git
-cd VladGh.com-LEMP/init_files
-sed -i.bak -e 's/start-stop-daemon/\/sbin\/start-stop-daemon/g' nginx
-cd /home/$USER_NAME
-chown -hR $USER_NAME VladGh.com-LEMP
-
-
-cd /home/$USER_NAME
+git clone git://github.com/vladgh/VladGh.com-LEMP.git /home/$USER_NAME/VladGh.com-LEMP
+sed -i.bak -e 's/start-stop-daemon/\/sbin\/start-stop-daemon/g' /home/$USER_NAME/VladGh.com-LEMP/init_files/nginx
+chown -hR $USER_NAME /home/$USER_NAME/VladGh.com-LEMP
+# Replace nginx.conf, default site
+cp $BASEDIR/conf_files/nginx.conf /home/$USER_NAME/VladGh.com-LEMP/conf_files/nginx.conf
+cp $BASEDIR/conf_files/default /home/$USER_NAME/VladGh.com-LEMP/conf_files/default
 
 # Restart Services
 restartServices
