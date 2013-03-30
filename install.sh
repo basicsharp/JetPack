@@ -101,7 +101,7 @@ groupadd $SUDO_USERGROUP
 # Create User & Add SSH Key
 USER_NAME_LOWER=`echo $USER_NAME | tr '[:upper:]' '[:lower:]'`
 useradd -m -s /bin/bash -G $SSHD_GROUPS,$SUDO_USERGROUP $USER_NAME_LOWER
-echo "$USER_NAME_LOWER:$USER_PASSWORD" | chpasswd
+echo "$USER_NAME_LOWER:$USER_PASSWORD" | sudo chpasswd
 USER_HOME=`sed -n "s/$USER_NAME_LOWER:x:[0-9]*:[0-9]*:[^:]*:\(.*\):.*/\1/p" < /etc/passwd`
 sudo -u $USER_NAME_LOWER mkdir $USER_HOME/.ssh
 echo "$USER_SSHKEY" >> $USER_HOME/.ssh/authorized_keys
@@ -122,9 +122,14 @@ aptitude -y install git screen yum vsftpd
 cp $BASEDIR/conf_files/vsftpd.conf /etc/vsftpd.conf
 FTP_USER_NAME_LOWER=`echo $FTP_USER_NAME | tr '[:upper:]' '[:lower:]'`
 groupadd $FTP_USERGROUP
-useradd -m -G $FTP_USERGROUP $FTP_USER_NAME_LOWER
-echo "$FTP_USER_NAME_LOWER:$FTP_USER_PASSWORD" | chpasswd
+useradd -m -g $FTP_USERGROUP $FTP_USER_NAME_LOWER
+echo "$FTP_USER_NAME_LOWER:$FTP_USER_PASSWORD" | sudo chpasswd
 FTP_USER_HOME=`sed -n "s/$FTP_USER_NAME_LOWER:x:[0-9]*:[0-9]*:[^:]*:\(.*\):.*/\1/p" < /etc/passwd`
+sudo -u $FTP_USER_NAME_LOWER mkdir $FTP_USER_HOME/.ssh
+touch $FTP_USER_HOME/.ssh/authorized_keys
+chmod 0600 $FTP_USER_HOME/.ssh/authorized_keys
+chown $FTP_USER_NAME_LOWER:$FTP_USER_NAME_LOWER $FTP_USER_HOME/.ssh/authorized_keys
+sudo service vsftpd start
 
 # Install Server Shield
 git clone git://github.com/bluedragonz/server-shield.git /home/$USER_NAME/server-shield
