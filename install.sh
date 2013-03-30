@@ -1,3 +1,5 @@
+##########CONFIG##########
+
 HOSTNAME=""
 TIMEZONE="UTC"
 
@@ -7,6 +9,10 @@ USER_NAME="admin";
 USER_PASSWORD=""
 #Public Key for User
 USER_SSHKEY=""
+
+FTP_USER_NAME="sites"
+FTP_USER_PASSWORD=""
+FTP_USERGROUP="sites"
 
 #SSH Port
 #SSHD_PORT="22"
@@ -24,8 +30,12 @@ SUDO_USERGROUP="wheel"
 #Passwordless Sudo
 SUDO_PASSWORDLESS="Do Not Require Password" #Require Password, Do Not Require Password
 
+##########END CONFIG##########
+SCRIPTPATH=$(readlink -f $0)
+BASEDIR=$(dirname $SCRIPTPATH)
+
 #http://www.linode.com/stackscripts/view/?StackScriptID=1
-source include/StackScriptBashLib.sh
+source $BASEDIR/include/StackScriptBashLib.sh
 
 # Install and Configure Sudo
 aptitude -y install sudo
@@ -105,6 +115,14 @@ ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 # Module Installations
 aptitude -y install git screen yum vsftpd
 
+# Config vsftpd
+cp $BASEDIR/conf_files/vsftpd.conf /etc/vsftpd.conf
+FTP_USER_NAME_LOWER=`echo $FTP_USER_NAME | tr '[:upper:]' '[:lower:]'`
+groupadd $FTP_USERGROUP
+useradd -m -G $FTP_USERGROUP $FTP_USER_NAME_LOWER
+echo "$FTP_USER_NAME_LOWER:$FTP_USER_PASSWORD" | chpasswd
+FTP_USER_HOME=`sed -n "s/$FTP_USER_NAME_LOWER:x:[0-9]*:[0-9]*:[^:]*:\(.*\):.*/\1/p" < /etc/passwd`
+
 # Install Server Shield
 cd /home/$USER_NAME
 git clone git://github.com/bluedragonz/server-shield.git
@@ -124,6 +142,7 @@ cd VladGh.com-LEMP/init_files
 sed -i.bak -e 's/start-stop-daemon/\/sbin\/start-stop-daemon/g' nginx
 cd /home/$USER_NAME
 chown -hR $USER_NAME VladGh.com-LEMP
+
 
 cd /home/$USER_NAME
 
