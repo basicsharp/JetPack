@@ -66,18 +66,18 @@ sed -n 's/\(MaxStartups .*\)/\1/p' < /etc/ssh/sshd_config >> /etc/ssh/sshd_confi
 sed -n 's/\(AcceptEnv .*\)/\1/p' < /etc/ssh/sshd_config >> /etc/ssh/sshd_config.tmp
 sed -n 's/\(Subsystem .*\)/\1/p' < /etc/ssh/sshd_config >> /etc/ssh/sshd_config.tmp
 sed -n 's/\(UsePAM .*\)/\1/p' < /etc/ssh/sshd_config >> /etc/ssh/sshd_config.tmp
-echo "AllowGroups `echo $SSHD_GROUP | tr '[:upper:]' '[:lower:]'`" >> /etc/ssh/sshd_config.tmp
+echo "AllowGroups `echo $SSHD_GROUPS | tr '[:upper:]' '[:lower:]'`" >> /etc/ssh/sshd_config.tmp
 chmod 0600 /etc/ssh/sshd_config.tmp
 mv /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config
 touch /tmp/restart-ssh
 
 # Create Groups
-groupadd $SSHD_GROUP
+groupadd $SSHD_GROUPS
 groupadd $SUDO_USERGROUP
 
 # Create User & Add SSH Key
 USER_NAME_LOWER=`echo $USER_NAME | tr '[:upper:]' '[:lower:]'`
-useradd -m -s /bin/bash -G $SSHD_GROUP,$SUDO_USERGROUP $USER_NAME_LOWER
+useradd -m -s /bin/bash -G $SSHD_GROUPS,$SUDO_USERGROUP $USER_NAME_LOWER
 echo "$USER_NAME_LOWER:$USER_PASSWORD" | chpasswd
 USER_HOME=`sed -n "s/$USER_NAME_LOWER:x:[0-9]*:[0-9]*:[^:]*:\(.*\):.*/\1/p" < /etc/passwd`
 sudo -u $USER_NAME_LOWER mkdir $USER_HOME/.ssh
