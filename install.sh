@@ -97,7 +97,7 @@ aptitude -y install git screen yum vsftpd
 
 # Install Server Shield
 cd ~
-git clone git://github.com/Brian-Holt/server-shield.git
+git clone git://github.com/bluedragonz/server-shield.git
 cd server-shield
 sed -i.bak -e 's/yum --security/yum/g' sshield
 chmod +x sshield
