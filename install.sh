@@ -13,7 +13,7 @@ SSHD_PORT="22"
 #SSH Protocol
 SSHD_PROTOCOL="2"
 #SSH Permit Root Login
-SSHD_PERMIT_ROOT="No"
+SSHD_PERMITROOT="No"
 #SSH Password Authentication
 SSHD_PASSWORDAUTH="Yes"
 #SSH Allowed Groups
