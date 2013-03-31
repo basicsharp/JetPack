@@ -39,8 +39,7 @@ SCRIPTPATH=$(readlink -f $0)
 BASEDIR=$(dirname $SCRIPTPATH)
 
 #http://www.linode.com/stackscripts/view/?StackScriptID=1
-echo $BASEDIR/include/StackScriptBashLib.sh
-source $BASEDIR/include/StackScriptBashLib.sh
+source include/StackScriptBashLib.sh
 
 # Install and Configure Sudo
 aptitude -y install sudo
