@@ -22,7 +22,7 @@ FTP_USERGROUP="sites"
 #SSH Protocol
 #SSHD_PROTOCOL="2"
 #SSH Allowed Groups
-#SSHD_GROUPS="sshusers"
+SSHD_GROUPS="sshusers"
 #SSH Permit Root Login
 #SSHD_PERMITROOT="No"
 #SSH Password Authentication
