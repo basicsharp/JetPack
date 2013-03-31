@@ -102,7 +102,7 @@ groupadd $SUDO_USERGROUP
 # Create User & Add SSH Key
 USER_NAME_LOWER=`echo $USER_NAME | tr '[:upper:]' '[:lower:]'`
 #useradd -m -s /bin/bash -G $SSHD_GROUPS,$SUDO_USERGROUP $USER_NAME_LOWER
-useradd -m -s /bin/bash -G $SSHD_GROUPS,$SUDO_USERGROUP $USER_NAME_LOWER
+useradd -m -s /bin/bash -g $SUDO_USERGROUP $USER_NAME_LOWER
 echo "$USER_NAME_LOWER:$USER_PASSWORD" | sudo chpasswd
 USER_HOME=`sed -n "s/$USER_NAME_LOWER:x:[0-9]*:[0-9]*:[^:]*:\(.*\):.*/\1/p" < /etc/passwd`
 sudo -u $USER_NAME_LOWER mkdir $USER_HOME/.ssh
