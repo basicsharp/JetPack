@@ -22,7 +22,7 @@ FTP_USERGROUP="sites"
 #SSH Protocol
 #SSHD_PROTOCOL="2"
 #SSH Allowed Groups
-SSHD_GROUPS="sshusers"
+#SSHD_GROUPS="sshusers"
 #SSH Permit Root Login
 #SSHD_PERMITROOT="No"
 #SSH Password Authentication
@@ -96,11 +96,12 @@ mv /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config
 touch /tmp/restart-ssh
 
 # Create Groups
-groupadd $SSHD_GROUPS
+#groupadd $SSHD_GROUPS
 groupadd $SUDO_USERGROUP
 
 # Create User & Add SSH Key
 USER_NAME_LOWER=`echo $USER_NAME | tr '[:upper:]' '[:lower:]'`
+#useradd -m -s /bin/bash -G $SSHD_GROUPS,$SUDO_USERGROUP $USER_NAME_LOWER
 useradd -m -s /bin/bash -G $SSHD_GROUPS,$SUDO_USERGROUP $USER_NAME_LOWER
 echo "$USER_NAME_LOWER:$USER_PASSWORD" | sudo chpasswd
 USER_HOME=`sed -n "s/$USER_NAME_LOWER:x:[0-9]*:[0-9]*:[^:]*:\(.*\):.*/\1/p" < /etc/passwd`
