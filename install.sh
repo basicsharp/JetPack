@@ -34,6 +34,7 @@ SUDO_USERGROUP="wheel"
 SUDO_PASSWORDLESS="Do Not Require Password" #Require Password, Do Not Require Password
 
 ##########END CONFIG##########
+PWD=$(pwd)
 SCRIPTPATH=$(readlink -f $0)
 BASEDIR=$(dirname $SCRIPTPATH)
 
@@ -131,7 +132,7 @@ chmod 0600 $FTP_USER_HOME/.ssh/authorized_keys
 chown $FTP_USER_NAME_LOWER:$FTP_USER_NAME_LOWER $FTP_USER_HOME/.ssh/authorized_keys
 sudo service vsftpd start
 
-# Install Server Shield
+# Download Server Shield
 git clone git://github.com/bluedragonz/server-shield.git /home/$USER_NAME/server-shield
 sed -i.bak -e 's/yum --security/yum/g' /home/$USER_NAME/server-shield/sshield
 chmod +x /home/$USER_NAME/server-shield/sshield
@@ -146,6 +147,20 @@ chown -hR $USER_NAME /home/$USER_NAME/VladGh.com-LEMP
 # Replace nginx.conf, default site
 cp $BASEDIR/conf_files/nginx.conf /home/$USER_NAME/VladGh.com-LEMP/conf_files/nginx.conf
 cp $BASEDIR/conf_files/default /home/$USER_NAME/VladGh.com-LEMP/conf_files/default
+
+# Install Webmin
+echo -e "\ndeb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
+echo "deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib" >> /etc/apt/sources.list
+wget -P /root/ http://www.webmin.com/jcameron-key.asc
+apt-key add /root/jcameron-key.asc
+apt-get update
+apt-get install webmin
+
+# Install Glances
+apt-get update
+apt-get install python-pip build-essential python-dev
+pip install Glances
+
 
 # Restart Services
 restartServices
