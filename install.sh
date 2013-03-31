@@ -39,6 +39,7 @@ SCRIPTPATH=$(readlink -f $0)
 BASEDIR=$(dirname $SCRIPTPATH)
 
 #http://www.linode.com/stackscripts/view/?StackScriptID=1
+echo $BASEDIR/include/StackScriptBashLib.sh
 source $BASEDIR/include/StackScriptBashLib.sh
 
 # Install and Configure Sudo
@@ -150,7 +151,7 @@ cp $BASEDIR/conf_files/nginx.conf /home/$USER_NAME/VladGh.com-LEMP/conf_files/ng
 cp $BASEDIR/conf_files/default /home/$USER_NAME/VladGh.com-LEMP/conf_files/default
 
 # Install Webmin
-echo -e "\ndeb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
+echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
 echo "deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib" >> /etc/apt/sources.list
 wget -P /root/ http://www.webmin.com/jcameron-key.asc
 apt-key add /root/jcameron-key.asc
